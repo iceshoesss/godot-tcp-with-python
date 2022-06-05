@@ -11,22 +11,26 @@ signal disconnected
 signal error
 signal data
 
-func _process(_delta):
-	var current_status = client.get_status()
-	if current_status != status:
-		match current_status:
-			client.STATUS_NONE:
-				print('disconnect from host,please try again')
-				emit_signal("disconnected")
-			client.STATUS_CONNECTING:
-				print('connecting to ')
-				emit_signal("connecting")
-			client.STATUS_CONNECTED:
-				print('connected to ')
-				emit_signal("connected")
-			client.STATUS_ERROR:
-				print('error with socket')
-				emit_signal("error")
+#func _process(_delta) -> void:
+#	var current_status = client.get_status()
+#	if current_status != status:
+#		match current_status:
+#			client.STATUS_NONE:
+#				print('disconnect from host,please try again')
+#				emit_signal("disconnected")
+#				continue
+#			client.STATUS_CONNECTING:
+#				print('connecting to ')
+#				emit_signal("connecting")
+#				continue
+#			client.STATUS_CONNECTED:
+#				print('connected to ')
+#				emit_signal("connected")
+#				continue
+#			client.STATUS_ERROR:
+#				print('error with socket')
+#				emit_signal("error")
+#				continue
 				
 
 func _on_Button_pressed():
@@ -36,8 +40,13 @@ func _on_Button_pressed():
 
 
 func _on_Button2_pressed():
+#	status = client.STATUS_CONNECTED
 	# 2.连接服务器，其中参数ip为str，端口为int
 	client.connect_to_host('192.168.31.182',8095)
+	
+#	if client.connect_to_host() != OK:
+#		print("can't connect to the host")
+#		emit_signal("error")
 
 
 func _on_State_pressed():
@@ -46,6 +55,7 @@ func _on_State_pressed():
 
 
 func _on_Disconnect_pressed():
+#	status = client.STATUS_NONE
 	# 端开连接
 	client.disconnect_from_host()
 

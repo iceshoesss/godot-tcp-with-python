@@ -1,6 +1,18 @@
 import socket
 import threading
 
+def Threadclient(clientsocket,addr):
+  print(addr)
+  # 5.接收数据
+  while True:
+    recvmsg = clientsocket.recv(1024)
+    # 将收到的数据转码并打印
+    strData = recvmsg.decode("utf-8")
+    print('client：',strData)
+
+    clientsocket.send('server:OKabsd'.encode("utf-8"))
+
+  clientsocket.close()
 
 if __name__ == '__main__':
     # 1.创建服务端套接字对象
@@ -19,17 +31,8 @@ if __name__ == '__main__':
         # accept会阻塞
         # 返回一个用以与和客户端通信的socket和客户端的ip地址
         clientsocket,addr = socketserver.accept()
-        print(addr)
-        # 5.接收数据
- #       while True:
-        recvmsg = clientsocket.recv(1024)
-        # 将收到的数据转码并打印
-        strData = recvmsg.decode("utf-8")
-        print('收到：',strData)
-
-        clientsocket.send('OKabsd'.encode("utf-8"))
-
-        clientsocket.close()
+        client_thread = threading.Thread(target=Threadclient,args=(clientsocket,addr))
+        client_thread.start()
       #  break
 
 
