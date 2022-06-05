@@ -3,11 +3,31 @@ extends Node
 
 # 1.新建TCP类
 onready var client = StreamPeerTCP.new()
+onready var status = client.get_status()
 
 signal connected
-signal data
+signal connecting
 signal disconnected
 signal error
+signal data
+
+func _process(_delta):
+	var current_status = client.get_status()
+	if current_status != status:
+		match current_status:
+			client.STATUS_NONE:
+				print('disconnect from host,please try again')
+				emit_signal("disconnected")
+			client.STATUS_CONNECTING:
+				print('connecting to ')
+				emit_signal("connecting")
+			client.STATUS_CONNECTED:
+				print('connected to ')
+				emit_signal("connected")
+			client.STATUS_ERROR:
+				print('error with socket')
+				emit_signal("error")
+				
 
 func _on_Button_pressed():
 	var msg = $Control/TextEdit.text
