@@ -4,6 +4,10 @@ extends Node
 # 1.新建TCP类
 onready var client = StreamPeerTCP.new()
 
+signal connected
+signal data
+signal disconnected
+signal error
 
 func _on_Button_pressed():
 	var msg = $Control/TextEdit.text
